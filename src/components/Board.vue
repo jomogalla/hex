@@ -1,20 +1,20 @@
 <template>
   <div class="tile-wrapper">
-    <!-- <div class="dice-section"> -->
       <transition-group name="slide-fade" class="dice-section" tag="div">
-      <Dice :value="diceValues[index].value" 
-            v-for="(dice, index) in diceValues" 
-            :key="dice.id"/>
+        <Dice :value="diceValues[index].value" 
+              v-for="(dice, index) in diceValues" 
+              :key="dice.id"
+              v-on:click="rollByIndex(index)"
+              class="dice-wrap"/>
       </transition-group>
       
+    <div class="control-bar">
+      <div class="total">{{ diceTotal }}</div>
 
-    <!-- </div> -->
-    <hr>
-    <div class="total">{{ diceTotal }}</div>
-
-    <button @click="lessDice" class="transparent middle light-gray"><i class="fas fa-minus"></i></button>
-    <button @click="rollAll" class="transparent roller"><i class="fas fa-dice-d6"></i></button>
-    <button @click="moreDice" class="transparent middle light-gray"><i class="fas fa-plus"></i></button>
+      <button @click="lessDice" class="transparent middle light-gray side-button"><i class="fas fa-minus"></i></button>
+      <button @click="rollAll" class="transparent roller"><i class="fas fa-dice-d6"></i></button>
+      <button @click="moreDice" class="transparent middle light-gray side-button"><i class="fas fa-plus"></i></button>
+    </div>
   </div>
 </template>
 
@@ -60,9 +60,17 @@ export default {
     roll() {
       this.diceValue = this.generateInt(6);
     },
+    rollByIndex(index) {
+console.log(index)
+    },
     rollAll() {
-      for(let index = 0; index < this.diceValues.length; index++) {
-        this.diceValues.splice(index, 1, this.getNewDice());
+      // for(let index = 0; index < this.diceValues.length; index++) {
+      //   this.diceValues.splice(index, 1, this.getNewDice());
+      // }
+      this.diceValues = [];
+
+      for(let i = 0; i < this.numDice; i++) {
+        this.diceValues.push(this.getNewDice());
       }
     },
     repopulateDice() {
@@ -107,8 +115,10 @@ export default {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  padding: 3rem;
   // margin-bottom: 5rem;
 }
+
 
 .roller {
   font-size: 2rem;
@@ -126,26 +136,18 @@ export default {
   color: #cccccc;
 }
 
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.dice-wrap {
+  transition: transform 0.2s;
 }
 .slide-fade-enter, 
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: rotate(90deg);
-
-  opacity: 0;
-}
-
 .slide-fade-leave-to {
-  transition: none !important;
-  transform: rotate(90deg);
-  display: none;
+  opacity: 0;
+  transform: rotate(360deg);
 }
+.slide-fade-leave-active {
+  position: absolute;
+}
+
 .transparent {
   outline: none;
   border: none;
@@ -159,6 +161,18 @@ export default {
 
   &:active {
     transform: scale(1.4);
+  }
+}
+
+.control-bar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 3rem;
+
+  .side-button {
+    padding: 0 2rem;
   }
 }
 </style>

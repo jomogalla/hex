@@ -29,7 +29,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .dice {
-  font-size: 2rem;
+  font-size: 5rem;
+  font-size: 20vw;
   margin: 0.1rem;
 }
 </style>
