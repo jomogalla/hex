@@ -1,7 +1,6 @@
 <template>
   <div class="dice">
     <i class="fas" :class="[classes[value - 1]]"></i>
-    <!-- {{value}} -->
   </div>
 </template>
 
