@@ -1,6 +1,6 @@
 <template>
   <div class="dice">
-    <i class="fas" :class="[classes[value - 1]]"></i>
+    <i class="fas" :class="getFontClass"></i>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      classes: [
+      fontClasses: [
         'fa-dice-one',
         'fa-dice-two',
         'fa-dice-three',
@@ -21,15 +21,21 @@ export default {
         'fa-dice-six'
       ]
     };
-  }
+  },
+  computed: {
+    getFontClass() {
+      return this.fontClasses[this.value - 1]
+    }
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .dice {
-  font-size: 5rem;
-  font-size: 20vw;
-  margin: 0.1rem;
+  color: white;
+  font-size: 4rem;
+  // font-size: 20vw;
+  margin: 0.5rem;
 }
 </style>

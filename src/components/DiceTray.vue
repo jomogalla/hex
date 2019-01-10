@@ -9,11 +9,13 @@
       </transition-group>
       
     <div class="control-bar">
-      <div class="total">{{ diceTotal }}</div>
+      <div class="total upside-down" :class="getStyleClass">{{ diceTotal }}</div>
 
-      <button @click="lessDice" class="transparent middle light-gray side-button"><i class="fas fa-minus"></i></button>
+      <!-- <button @click="lessDice" class="transparent middle light-gray side-button"><i class="fas fa-minus"></i></button> -->
       <button @click="rollAll" class="transparent roller"><i class="fas fa-dice-d6"></i></button>
-      <button @click="moreDice" class="transparent middle light-gray side-button"><i class="fas fa-plus"></i></button>
+      
+      <!-- <button @click="moreDice" class="transparent middle light-gray side-button"><i class="fas fa-plus"></i></button> -->
+      <div class="total" :class="getStyleClass">{{ diceTotal }}</div>
     </div>
   </div>
 </template>
@@ -25,7 +27,7 @@ export default {
   components: {
     Dice
   },
-  name: 'Board',
+  name: 'DiceTray',
   data() {
     return {
       diceValue: 0,
@@ -60,7 +62,18 @@ export default {
         total += dice.value;
       }
       return total;
-    }
+    },
+    getStyleClass() {
+      let className = [];
+      // if(this.diceTotal === 6 || this.diceTotal === 9) {
+        className.push('dotted-border');
+      // }
+      if(this.diceTotal === 7) {
+        className.push('red')
+      }
+
+      return className;
+    },
   },
   methods: {
     roll() {
@@ -78,7 +91,9 @@ export default {
       for(let i = 0; i < this.numDice; i++) {
         this.diceValues.push(this.getNewDice());
       }
-    },
+
+      this.$store.commit('updateDiceTotal', this.diceTotal)
+    }, // NOT SURE WHY THERE ARE TWO OF THESE
     repopulateDice() {
       this.diceValues = [];
 
@@ -114,32 +129,40 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .dice-tray {
-  grid-area: sidebar;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1rem;
 }
 
 .total {
   font-size: 2rem;
+  color: white;
+  display: inline-block;
+  line-height: 1;
+  margin: auto 0.5rem;
+  width: 2rem;
 }
 
 .dice-section {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  padding: 3rem;
+
   // margin-bottom: 5rem;
 }
 
-
 .roller {
   font-size: 2rem;
-}
-
-.wiggle-jiggle {
-  animation-name: wiggle;
+  color: white;
 }
 
 .middle {
   vertical-align: super;
+}
+
+.dotted-border { 
+  border-bottom: 1px dotted white;
 }
 
 .light-gray {
@@ -158,6 +181,10 @@ export default {
   position: absolute;
 }
 
+.upside-down {
+  transform: rotate(180deg);
+}
+
 .transparent {
   outline: none;
   border: none;
@@ -174,12 +201,16 @@ export default {
   }
 }
 
+.red {
+  color: red;
+}
+
 .control-bar {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  padding: 3rem;
+  // position: fixed;
+  // bottom: 0;
+  // right: 0;
+  // left: 0;
+  //padding: 3rem;
 
   .side-button {
     padding: 0 2rem;

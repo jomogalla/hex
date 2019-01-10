@@ -2,6 +2,11 @@
   <div class="tile-wrapper">
       <!-- <transition-group name="slide-fade" class="dice-section" tag="div"> -->
     <svg viewBox="-110 -300 1100 1000" class="game-board">
+      <!-- <defs>
+        <pattern id="img1" patternUnits="userSpaceOnUse" width="1000" height="1000">
+          <image xlink:href="/assets/woods.jpg" x="0" y="0" width="200" height="100" />
+        </pattern>
+      </defs> -->
       <g transform="translate(0, 0) rotate(-30)">
           <!-- <g class="grid"> -->
           <transition-group name="slide-fade" class="grid" tag="g">
@@ -17,7 +22,7 @@
           <!-- </g> -->
       </g>
     </svg>
-
+    <button @click="restartBoard" class="restart-board-button"><i class="fas fa-bomb"></i></button>
       <!-- </transition-group> -->
   </div>
 </template>
@@ -101,6 +106,9 @@ export default {
     }
   },
   methods: {
+    restartBoard() {
+      this.tiles = this.generateBoard(5);
+    },
     getQOffset(currentQ, totalQ) {
       return currentQ * this.tileWidth;
     },
@@ -210,8 +218,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .game-board { 
-    max-width: 100vw;
-    max-height: 100vh;
+    max-width: 90vw;
+    max-height: 90vh;
   }
 
   .slide-fade-enter, 
@@ -221,5 +229,14 @@ export default {
 }
 .slide-fade-leave-active {
   position: absolute;
+}
+
+.restart-board-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 1;
+  font-size: 2rem;
+
 }
 </style>

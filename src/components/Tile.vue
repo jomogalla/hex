@@ -1,6 +1,6 @@
 <template>
   <g :transform="transformValue">
-      <g :class="resourceTypeClass" class="tile">
+      <g :class="classes" class="tile">
           <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
           <text dy="0.4em" transform="rotate(30)">
               <tspan :x="textCenterValue" y="0">{{value}}</tspan>
@@ -21,8 +21,16 @@ export default {
     blocked: Boolean
   },
   computed: {
-    resourceTypeClass() {
-      return this.resourceType;
+    classes() {
+      let classes = []
+      classes.push(this.resourceType);
+      if(this.isCurrentValue) {
+        classes.push('active')
+      }
+      return classes;
+    },
+    isCurrentValue() {
+      return this.value === this.$store.state.diceTotal;
     },
     transformValue() {
       return 'translate(' + this.qValue + ',' + this.rValue + ')';
@@ -40,11 +48,17 @@ export default {
 
 <style scoped lang="scss">
 .tile {
+  opacity: 0.6;
   stroke: white;
+  stroke-width: 0.1rem;
   font-size: 60px;
 
   text {
     fill: white;
+  }
+
+  &.active {
+    opacity: 1;
   }
 
   &.brick {
@@ -66,6 +80,8 @@ export default {
 
   &.wood {
     fill: #448e44;
+    // fill: url(#img1);
+    background-image: url(/assets/woods.jpg)
   }
 
   &.sand {
