@@ -21,11 +21,15 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .game {
   display: grid;
   grid-template-areas: 
     "main"
     "sidebar";
+}
+
+html {
+  background-color: black;
 }
 </style>

@@ -3,7 +3,7 @@
       <g :class="resourceTypeClass" class="tile">
           <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
           <text dy="0.4em" transform="rotate(30)">
-              <tspan class="q-coord">{{value}}</tspan>
+              <tspan :x="textCenterValue" y="0">{{value}}</tspan>
           </text>
       </g>
   </g>      
@@ -24,14 +24,15 @@ export default {
     resourceTypeClass() {
       return this.resourceType;
     },
-    qOffset() {
-      return 240  * this.qValue;
-    },
-    rOffset() {
-      return 250 *   (3/4) * this.rValue;
-    },
     transformValue() {
-      return 'translate(' + this.qOffset + ',' + this.rOffset + ')';
+      return 'translate(' + this.qValue + ',' + this.rValue + ')';
+    },
+    textCenterValue() {
+      if(this.value > 9) {
+        return '-35';
+      }
+
+      return '-15';
     }
   }
 };
@@ -39,31 +40,41 @@ export default {
 
 <style scoped lang="scss">
 .tile {
-stroke: white;
-font-size: 100px;
+  stroke: white;
+  font-size: 60px;
+
+  text {
+    fill: white;
+  }
 
   &.brick {
-    fill: #ca3e00;
+    fill: #ca5826;
   }
 
   &.wool {
-    fill: yellowgreen;
+    fill: #94b949;
   }
 
   &.ore {
-    fill: #8a989e;
+    fill: #98a295;
+    fill: #808a7d
   }
 
   &.wheat {
-    fill: #ffd441;
+    fill: #e6c03d;
   }
 
   &.wood {
-    fill: #057505;
+    fill: #448e44;
   }
 
   &.sand {
     fill: tan;
+    fill: #d4c4ae;
+    // fill: black;
+    // stroke: transparent;
+    // stroke-width: 0.25rem;
+    font-size: 0;
   }
 }
 
