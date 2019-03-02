@@ -1,9 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VuexPersistence from 'vuex-persist'
 
 import boardModule from './modules/boardModule'
 
 Vue.use(Vuex);
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
 
 export default new Vuex.Store({
   modules: {
@@ -35,8 +40,9 @@ export default new Vuex.Store({
       return state.playerNames[state.currentPlayerIndex];
     },
     timeSinceLastRoll(state) {
-      const diffInMs = Math.abs(state.currentTime - state.lastRollTime);
+      const diffInMs = Math.abs(new Date(state.currentTime) - new Date(state.lastRollTime));
       return parseInt(diffInMs / 1000, 10);
     }
   }, 
+  plugins: [vuexLocal.plugin],
 });
