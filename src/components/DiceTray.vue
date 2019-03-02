@@ -1,7 +1,9 @@
 <template>
   <div class="dice-tray">
       <div class="turn-info">
-        {{ $store.getters.currentPlayer }}
+        <span class="player-name" :class="$store.getters.currentPlayer.color">
+          {{ currentPlayerName }}
+        </span>
         <span class="time-since-last-roll">
           {{ $store.getters.timeSinceLastRoll | formatSeconds }}
         </span>
@@ -16,13 +18,13 @@
       </transition-group>
       
     <div class="control-bar">
-      <div class="total upside-down" :class="getStyleClass">{{ diceTotal }}</div>
+      <div class="total upside-down" :class="getStyleClass">{{ diceTotal || 'X'}}</div>
 
       <!-- <button @click="lessDice" class="transparent middle light-gray side-button"><i class="fas fa-minus"></i></button> -->
       <button @click="rollAll" class="transparent roller"><i class="fas fa-dice-d6"></i></button>
       
       <!-- <button @click="moreDice" class="transparent middle light-gray side-button"><i class="fas fa-plus"></i></button> -->
-      <div class="total" :class="getStyleClass">{{ diceTotal }}</div>
+      <div class="total" :class="getStyleClass">{{ diceTotal || 'X' }}</div>
 
 
     </div>
@@ -46,7 +48,7 @@ export default {
     };
   },
   mounted() {
-    this.repopulateDice();
+    // this.repopulateDice();
     var self = this;
 
     // Attach Event Listeners
@@ -82,6 +84,9 @@ export default {
       }
 
       return className;
+    },
+    currentPlayerName() {
+      return this.$store.getters.currentPlayer.name || 'no name';
     },
   },
   methods: {
@@ -139,6 +144,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
 .dice-tray {
   position: fixed;
   left: 0;
@@ -169,6 +175,27 @@ export default {
   color: white;
   font-weight: 100;
   font-size: 2.5rem;
+
+  .player-name {
+    &.orange {
+      color: orange;
+    }
+    &.green {
+      color: green;
+    }
+    &.white {
+      color: white;
+    }
+    &.brown {
+      color: brown;
+    }
+    &.blue {
+      color: blue;
+    }
+    &.red {
+      color: red;
+    }
+  }
 
   .time-since-last-roll {
     font-family: 'Courier New', Courier, monospace;

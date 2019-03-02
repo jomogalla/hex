@@ -22,7 +22,6 @@
           <!-- </g> -->
       </g>
     </svg>
-    <button @click="restartBoard" class="restart-board-button"><i class="fas fa-bomb"></i></button>
       <!-- </transition-group> -->
   </div>
 </template>
@@ -110,9 +109,6 @@ export default {
     }
   },
   methods: {
-    restartBoard() {
-      this.$store.commit('setBoard', this.generateBoard(5));
-    },
     getQOffset(currentQ, totalQ) {
       return currentQ * this.tileWidth;
     },
@@ -125,96 +121,6 @@ export default {
 
       return currentR * this.tileHeight + offset;
     },
-    generateBoard(boardSize) {
-      if(!boardSize) { return [[]]; }
-      if(boardSize !== 5 && boardSize !== 6) { return [[]]; }
-
-      const middleIndex = Math.floor(boardSize / 2);
-
-      let totalTiles = 0;
-
-      // Figure out how many dang tiles well have. this should probably be de duped if u know what i men
-      for(let q = 0; q < boardSize; q++) {
-        let currentWidth = q >= middleIndex ? boardSize - q + middleIndex : middleIndex + q + 1;
-
-        for(let r = 0; r < currentWidth; r++) {
-          totalTiles++;
-        }
-      }
-
-      // Get the number of each tiles we'll have
-      let numDesertTiles = Math.ceil(totalTiles / 25);
-      let numPlentyTiles = Math.ceil(totalTiles / 5);
-      let numScarceTiles = Math.floor(totalTiles / 6);
-
-      // Make some arrays with those names
-      let desertArray = Array(numDesertTiles).fill('sand');
-      let oreArray = Array(numScarceTiles).fill('ore');
-      let brickArray = Array(numScarceTiles).fill('brick');
-      let wheatArray = Array(numPlentyTiles).fill('wheat');
-      let woolArray = Array(numPlentyTiles).fill('wool');
-      let woodArray = Array(numPlentyTiles).fill('wood');
-
-      // COMBINE AND SHUFFLE!
-      const nonShuffledArray = [...desertArray, ...oreArray, ...brickArray, ...wheatArray, ...woolArray, ...woodArray];
-      let shuffledResourceArray = this.knuthShuffle(nonShuffledArray);
-      shuffledResourceArray = this.knuthShuffle(shuffledResourceArray);
-      shuffledResourceArray = this.knuthShuffle(shuffledResourceArray);
-
-      // GET US SOME VALUES FOR THE DICE
-      let resourceDiceValues = [];
-      // Bad place for this...
-      let fiveWideNumberArray = [5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11];
-      let sixWideNumberArray = [2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 12, 9, 3, 2, 6];
-
-
-      if(boardSize === 5) { resourceDiceValues = fiveWideNumberArray; }
-      if(boardSize === 6) { resourceDiceValues = sixWideNumberArray; }
-
-      let finalBoard = [];
-      let idNumber = 0;
-      for(let q = 0; q < boardSize; q++) {
-        let currentWidth = q >= middleIndex ? boardSize - q + middleIndex : middleIndex + q + 1;
-        let row = [];
-
-        for(let r = 0; r < currentWidth; r++) {
-          let resourceType = shuffledResourceArray.pop();
-          
-          let resourceValue = null;
-          if(resourceType !== "sand") {
-            resourceValue = resourceDiceValues.pop();
-          }
-
-          row.push({ 
-            id: idNumber,
-            value: resourceValue,
-            resourceType: resourceType,
-          })
-
-          idNumber++;
-        }
-        finalBoard.push(row);
-      }
-
-      return finalBoard;
-    },
-    knuthShuffle(array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
-
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-
-      return array;
-    }
   },
 };
 </script>

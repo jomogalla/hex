@@ -1,5 +1,6 @@
 <template>
 <div class="game">
+  <router-link :to="'/create'">editor</router-link>
   <DiceTray/>
   <div class="board">
     <Board />
