@@ -13,7 +13,7 @@ import DiceTray from '@/components/DiceTray.vue';
 import Board from '@/components/Board.vue';
 
 export default {
-  name: 'home',
+  name: 'game',
   components: {
     DiceTray,
     Board,

@@ -24,6 +24,7 @@ export default {
     classes() {
       let classes = []
       classes.push(this.resourceType);
+
       if(this.isCurrentValue) {
         classes.push('active')
       }
@@ -59,6 +60,7 @@ export default {
 
   &.active {
     opacity: 1;
+    stroke-width: 0.3rem;
   }
 
   &.brick {
@@ -67,6 +69,7 @@ export default {
 
   &.wool {
     fill: #94b949;
+    fill: #bdd68b
   }
 
   &.ore {
@@ -87,6 +90,9 @@ export default {
   &.sand {
     fill: tan;
     fill: #d4c4ae;
+    fill: black;
+    stroke-dasharray: 4;
+    stroke-width: 0.2rem;
     // fill: black;
     // stroke: transparent;
     // stroke-width: 0.25rem;

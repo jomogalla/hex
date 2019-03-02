@@ -40,7 +40,7 @@ export default {
       //arrayForStuff: [],
       tileHeight: 175,
       tileWidth: 150,
-      tiles: this.generateBoard(5),
+     // tiles: this.generateBoard(5),
       exampleTiles: [[{
         id: 0,
         value: 5,
@@ -73,9 +73,13 @@ export default {
     };
   },
   mounted() {
-    this.tiles = this.generateBoard(5);
+  //  this.tiles = this.generateBoard(5);
+  //  this.$store.commit('setBoard', this.generateBoard(5));
   },
   computed: {
+    tiles() {
+      return this.$store.state.board.tiles;
+    },
     flattenedTiles() {
       if(!this.tiles) { return [[]]; }
 
@@ -107,7 +111,7 @@ export default {
   },
   methods: {
     restartBoard() {
-      this.tiles = this.generateBoard(5);
+      this.$store.commit('setBoard', this.generateBoard(5));
     },
     getQOffset(currentQ, totalQ) {
       return currentQ * this.tileWidth;

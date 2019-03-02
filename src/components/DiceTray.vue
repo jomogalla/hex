@@ -1,5 +1,12 @@
 <template>
   <div class="dice-tray">
+      <div class="turn-info">
+        {{ $store.getters.currentPlayer }}
+        <span class="time-since-last-roll">
+          {{ $store.getters.timeSinceLastRoll | formatSeconds }}
+        </span>
+      </div>
+
       <transition-group name="slide-fade" class="dice-section" tag="div">
         <Dice :value="diceValues[index].value" 
               v-for="(dice, index) in diceValues" 
@@ -16,6 +23,8 @@
       
       <!-- <button @click="moreDice" class="transparent middle light-gray side-button"><i class="fas fa-plus"></i></button> -->
       <div class="total" :class="getStyleClass">{{ diceTotal }}</div>
+
+
     </div>
   </div>
 </template>
@@ -92,7 +101,9 @@ export default {
         this.diceValues.push(this.getNewDice());
       }
 
-      this.$store.commit('updateDiceTotal', this.diceTotal)
+      this.$store.commit('updateDiceTotal', this.diceTotal);
+      this.$store.commit('setNextPlayer');
+      this.$store.commit('updateLastRollTime');
     }, // NOT SURE WHY THERE ARE TWO OF THESE
     repopulateDice() {
       this.diceValues = [];
@@ -137,11 +148,13 @@ export default {
 
 .total {
   font-size: 2rem;
+  font-size: 5rem;
   color: white;
   display: inline-block;
   line-height: 1;
   margin: auto 0.5rem;
   width: 2rem;
+  width: 6rem;
 }
 
 .dice-section {
@@ -151,6 +164,17 @@ export default {
 
   // margin-bottom: 5rem;
 }
+
+.turn-info {
+  color: white;
+  font-weight: 100;
+  font-size: 2.5rem;
+
+  .time-since-last-roll {
+    font-family: 'Courier New', Courier, monospace;
+  }
+}
+
 
 .roller {
   font-size: 2rem;
